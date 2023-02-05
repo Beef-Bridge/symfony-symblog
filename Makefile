@@ -35,21 +35,24 @@ EXEC_NPM_CONTAINER = $(EXEC_CONTAINER) $(NPM)
 GREEN = /bin/echo -e "\x1b[32m\#\# $1\x1b[0m"
 RED = /bin/echo -e "\x1b[31m\#\# $1\x1b[0m"
 
-## -- App --
+## —— Help screen ——
+help: ## Outputs this help screen
+	@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+
+## —— App ——
 init: ## Init the project
 	$(MAKE) docker-start
 	$(MAKE) composer-install
 	@$(call GREEN, "The application is available at : LOCAL_HOST:LOCAL_PORT_APACHE")
 
-## -- Symfony --
+## —— Symfony ——
 cache-clear: ## Clear cache
 	$(EXEC_SYMFONY_CONTAINER) cache:clear
 
-## -- Docker --
+## —— Docker ——
 docker-start: ## Start app
 	$(DOCKER_COMP) up -d
 
-## -- Composer --
+## —— Composer ——
 composer-install: ## Install dependencies
 	$(EXEC_COMPOSER_CONTAINER) install
-
