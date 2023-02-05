@@ -27,13 +27,13 @@ services:
     
   www:
     build: docker
-    container_name: wwww_symblog_youtube
+    container_name: www_symblog_youtube
     restart: always
     ports:
       - 8001:80
     volumes:
       - ./docker/vhosts:/etc/apache2/sites-enabled
-      - ./:/var/www
+      - ./project:/var/www
     networks:
       - dev
 
