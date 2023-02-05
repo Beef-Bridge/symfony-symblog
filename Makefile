@@ -29,3 +29,6 @@ EXEC_NPM_CONTAINER = $(EXEC_CONTAINER) $(NPM)
 # Couleurs
 GREEN = /bin/echo -e "\x1b[32m\#\# $1\x1b[0m"
 RED = /bin/echo -e "\x1b[31m\#\# $1\x1b[0m"
+
+cache-clear: ## Clear cache
+	$(EXEC_SYMFONY_CONTAINER) cache:clear
