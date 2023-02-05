@@ -48,11 +48,17 @@ init: ## Init the project
 ## —— Symfony ——
 cache-clear: ## Clear cache
 	$(EXEC_SYMFONY_CONTAINER) cache:clear
+fix-perms: ## Fix permissions of all var files
+	@chmod -R 777 var/*
+purge: ## Purge cache and logs
+	@rm -rf var/cache/* var/logs/*
 
 ## —— Docker ——
 docker-start: ## Start app
-	$(DOCKER_COMP) up -d
+	$(DOCKER_COMP) up --detach
+docker-down: ## Stop the docker hub
+	$(DOCKER_COMP) down --remove-orphans
 
 ## —— Composer ——
 composer-install: ## Install dependencies
-	$(EXEC_COMPOSER_CONTAINER) install
+	$(EXEC_COMPOSER_CONTAINER) install --no-progress --prefer-dist --optimize-autoloader
