@@ -1,3 +1,8 @@
+# Var
+LOCAL_HOST        = http://127.0.0.1
+LOCAL_PORT_APACHE = 8001
+LOCAL_PORT_PMA    = 8081
+
 # Executables
 EXEC_PHP      = php
 COMPOSER      = composer
@@ -30,5 +35,21 @@ EXEC_NPM_CONTAINER = $(EXEC_CONTAINER) $(NPM)
 GREEN = /bin/echo -e "\x1b[32m\#\# $1\x1b[0m"
 RED = /bin/echo -e "\x1b[31m\#\# $1\x1b[0m"
 
+## -- App --
+init: ## Init the project
+	$(MAKE) docker-start
+	$(MAKE) composer-install
+	@$(call GREEN, "The application is available at : LOCAL_HOST:LOCAL_PORT_APACHE")
+
+## -- Symfony --
 cache-clear: ## Clear cache
 	$(EXEC_SYMFONY_CONTAINER) cache:clear
+
+## -- Docker --
+docker-start: ## Start app
+	$(DOCKER_COMP) up -d
+
+## -- Composer --
+composer-install: ## Install dependencies
+	$(EXEC_COMPOSER_CONTAINER) install
+
