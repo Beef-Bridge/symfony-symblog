@@ -62,3 +62,14 @@ docker-down: ## Stop the docker hub
 ## —— Composer ——
 composer-install: ## Install dependencies
 	$(EXEC_COMPOSER_CONTAINER) install --no-progress --prefer-dist --optimize-autoloader
+
+## --- Database --
+db-create: ##  Create database
+	$(EXEC_SYMFONY_CONTAINER) doctrine:database:create --if-not-exists
+
+db-update: ## Update database
+	$(EXEC_SYMFONY_CONTAINER) doctrine:schema:update --force --dump-sql --complete
+	$(EXEC_SYMFONY_CONTAINER) doctrine:migrations:migrate -n
+
+db-validate-schema: ## Valid doctrine mapping
+	$(EXEC_SYMFONY_CONTAINER) doctrine:schema:validate --skip-sync
