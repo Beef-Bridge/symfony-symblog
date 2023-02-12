@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Post
 {
     const STATE_LIST = ['STATE_DRAFT', 'STATE_PUBLISHED'];
@@ -39,6 +40,12 @@ class Post
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
     private DateTimeImmutable $createdAt;
+
+    public function __construct()
+    {
+        $this->updatedAt = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -115,5 +122,11 @@ class Post
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate()
+    {
+        $this->updatedAt = new DateTimeImmutable();
     }
 }
