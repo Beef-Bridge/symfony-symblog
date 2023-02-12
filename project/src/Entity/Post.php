@@ -129,4 +129,9 @@ class Post
     {
         $this->updatedAt = new DateTimeImmutable();
     }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
 }
