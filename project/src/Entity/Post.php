@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -17,21 +18,26 @@ class Post
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank()]
     private string $title;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank()]
     private string $slug;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank()]
     private string $content;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $state = Post::STATE_LIST[0];
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
     private DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
     private DateTimeImmutable $createdAt;
 
     public function getId(): ?int
