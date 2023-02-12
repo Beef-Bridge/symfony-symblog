@@ -27,6 +27,7 @@ PHPMETRICS    = ./vendor/bin/phpmetrics
 EXEC_CONTAINER = $(DOCKER) exec -w /var/www/ www_symblog_youtube
 EXEC_PHP_CONTAINER = $(EXEC_CONTAINER) $(EXEC_PHP)
 EXEC_SYMFONY_CONTAINER = $(EXEC_PHP_CONTAINER) bin/console
+EXEC_PHP_TEST_CONTAINER = $(EXEC_PHP_CONTAINER) bin/phpunit
 EXEC_COMPOSER_CONTAINER = $(EXEC_CONTAINER) $(COMPOSER)
 EXEC_YARN_CONTAINER = $(EXEC_CONTAINER) $(YARN)
 EXEC_NPM_CONTAINER = $(EXEC_CONTAINER) $(NPM)
@@ -44,6 +45,18 @@ init: ## Init the project
 	$(MAKE) docker-start
 	$(MAKE) composer-install
 	@$(call GREEN, "The application is available at : LOCAL_HOST:LOCAL_PORT_APACHE")
+
+## —— Tests ——
+tests: ## Run all tests
+	$(MAKE) database-init-test
+	$(EXEC_PHP_TEST_CONTAINER) bin/phpunit --testdox tests/Unit/
+	$(EXEC_PHP_TEST_CONTAINER) bin/phpunit --testdox tests/Functional/
+ 
+database-init-test: ## Init database for test
+	$(EXEC_SYMFONY_CONTAINER) d:d:d --force --if-exists --env=test
+	$(EXEC_SYMFONY_CONTAINER) d:d:c --env=test
+	$(EXEC_SYMFONY_CONTAINER) d:m:m --no-interaction --env=test
+	$(EXEC_SYMFONY_CONTAINER) d:f:l --no-interaction --env=test
 
 ## —— Symfony ——
 cache-clear: ## Clear cache
@@ -63,7 +76,7 @@ docker-down: ## Stop the docker hub
 composer-install: ## Install dependencies
 	$(EXEC_COMPOSER_CONTAINER) install --no-progress --prefer-dist --optimize-autoloader
 
-## --- Database --
+## —— Database ——
 db-create: ##  Create database
 	$(EXEC_SYMFONY_CONTAINER) doctrine:database:create --if-not-exists
 
