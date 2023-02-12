@@ -86,3 +86,9 @@ db-update: ## Update database
 
 db-validate-schema: ## Valid doctrine mapping
 	$(EXEC_SYMFONY_CONTAINER) doctrine:schema:validate --skip-sync
+
+db-migration: ## Create doctrine migration file
+	$(EXEC_SYMFONY_CONTAINER) doctrine:migrations:diff
+
+db-migrate: ## Run doctrine migration(s)
+	$(EXEC_SYMFONY_CONTAINER) doctrine:migrations:migrate -n
