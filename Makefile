@@ -77,8 +77,11 @@ composer-install: ## Install dependencies
 	$(EXEC_COMPOSER_CONTAINER) install --no-progress --prefer-dist --optimize-autoloader
 
 ## —— Database ——
-db-create: ##  Create database
+db-create: ## Create database
 	$(EXEC_SYMFONY_CONTAINER) doctrine:database:create --if-not-exists
+
+db-drop: ## Drop database
+	$(EXEC_SYMFONY_CONTAINER) doctrine:database:drop --force --if-exists
 
 db-update: ## Update database
 	$(EXEC_SYMFONY_CONTAINER) doctrine:schema:update --force --dump-sql --complete
