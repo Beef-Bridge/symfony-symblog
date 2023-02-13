@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Thumbnail;
 use DateTimeImmutable;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,6 +39,12 @@ class Post
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $state = Post::STATE_LIST[0];
+
+    #[ORM\OneToOne(inversedBy: 'post', targetEntity: Thumbnail::class, cascade: [
+        'persist',
+        'remove'
+    ])]
+    private Thumbnail $thumbnail;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
@@ -102,6 +109,18 @@ class Post
     public function setState(string $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?Thumbnail
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(Thumbnail $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }
