@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
 use DateTimeImmutable;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PostRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Post
 {
-    const STATE_LIST = ['STATE_DRAFT', 'STATE_PUBLISHED'];
+    public const STATE_LIST = ['STATE_DRAFT', 'STATE_PUBLISHED'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -122,6 +123,11 @@ class Post
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function prePersist()
+    {
+        $this->slug = (new Slugify())->slugify($this->title);
     }
 
     #[ORM\PreUpdate]
