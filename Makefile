@@ -77,6 +77,8 @@ composer-install: ## Install dependencies
 	$(EXEC_COMPOSER_CONTAINER) install --no-progress --prefer-dist --optimize-autoloader
 
 ## —— Database ——
+db-init: db-drop db-create db-migrate db-load-fixtures ## Init database with migration
+
 db-create: ## Create database
 	$(EXEC_SYMFONY_CONTAINER) doctrine:database:create --if-not-exists
 
@@ -95,3 +97,6 @@ db-migration: ## Create doctrine migration file
 
 db-migrate: ## Run doctrine migration(s)
 	$(EXEC_SYMFONY_CONTAINER) doctrine:migrations:migrate -n
+
+db-load-fixtures: ## Load fixtures
+	$(EXEC_SYMFONY_CONTAINER) doctrine:fixtures:load -n
