@@ -8,7 +8,7 @@
 
     <div class="flex flex-row flex-wrap justify-evenly mt-8">
     {% for post in posts %}
-      {% include "components/card.html.twig" %}
+      {% include "components/card.html.twig" with {post: post} only %}
     {% endfor %}
     </div>
   </div>
