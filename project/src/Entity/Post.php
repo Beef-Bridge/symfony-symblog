@@ -44,7 +44,7 @@ class Post
         'persist',
         'remove'
     ])]
-    private Thumbnail $thumbnail;
+    private ?Thumbnail $thumbnail = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]

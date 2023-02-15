@@ -8,9 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Entity\File;
 use App\Repository\ThumbnailRepository;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ThumbnailRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[Vich\Uploadable]
 class Thumbnail
 {
     #[ORM\Id]
