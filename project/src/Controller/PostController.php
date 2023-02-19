@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Repository\PostRepository;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,19 +13,13 @@ class PostController extends AbstractController
     #[Route('/', name: 'post_index', methods: [Request::METHOD_GET])]
     public function index(
         Request $request,
-        PostRepository $postRepository,
-        PaginatorInterface $paginatorInterface
+        PostRepository $postRepository
     ): Response {
-        $postList = $postRepository->findPublished();
-        $posts = $paginatorInterface->paginate(
-            $postList,
-            $request->query->getInt('page', 1),
-            9
-        );
+        $postList = $postRepository->findPublished($request->query->getInt('page', 1));
 
         return $this->render('post/index.html.twig', [
             'controller_name' => 'PostController',
-            'posts' => $posts
+            'posts' => $postList
         ]);
     }
 }
