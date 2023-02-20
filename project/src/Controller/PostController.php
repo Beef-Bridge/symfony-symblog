@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,8 @@ class PostController extends AbstractController
     }
 
     #[Route('/article/{slug}', name: 'post_details', methods: [Request::METHOD_GET])]
-    public function details(string $slug): Response
+    public function details(Post $post, PostRepository $postRepository): Response
     {
-        return $this->render('posts/details.html.twig');
+        return $this->render('post/details.html.twig', ['post' => $post]);
     }
 }
