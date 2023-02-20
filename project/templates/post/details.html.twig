@@ -5,7 +5,25 @@
 {% endblock %}
 
 {% block body %}
-  <div class="container mx-auto">
-    <h1 class="">{{ post.title }}</h1>
+  <div class="container my-24 px-6 mx-auto">
+    <section class="mb-32 text-gray-800">
+      {% if post.thumbnail %}
+        <img class="w-full shadow-lg rounded-lg mb-6" src="{{ vich_uploader_asset(post.thumbnail, 'imageFile') }}" alt="{{ post.thumbnail.imageName }}" />
+      {% endif %}
+
+      <div class="flex items-center mb-6">
+        <div>
+          <span>Publié le <u>{{ post.createdAt|date('d/m/Y') }}</u></span>
+        </div>
+      </div>
+
+      <h1 class="font-bold text-3xl mb-6">{{ post.title|capitalize }}</h1>
+
+      <p>{{ post.content|raw }}</p>
+
+      <div class="mx-auto mt-6">
+        <a href="{{ path('post_index') }}" class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Retour</a>
+      </div>
+    </section>
   </div>
 {% endblock %}
