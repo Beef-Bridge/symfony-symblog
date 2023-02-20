@@ -25,7 +25,7 @@ class PostController extends AbstractController
     }
 
     #[Route('/article/{slug}', name: 'post_details', methods: [Request::METHOD_GET])]
-    public function details(Post $post, PostRepository $postRepository): Response
+    public function details(Post $post): Response
     {
         return $this->render('post/details.html.twig', ['post' => $post]);
     }
