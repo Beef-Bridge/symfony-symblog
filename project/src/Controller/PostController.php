@@ -22,4 +22,10 @@ class PostController extends AbstractController
             'posts' => $postList
         ]);
     }
+
+    #[Route('/article/{slug}', name: 'post_details', methods: [Request::METHOD_GET])]
+    public function details(string $slug): Response
+    {
+        return $this->render('posts/details.html.twig');
+    }
 }
