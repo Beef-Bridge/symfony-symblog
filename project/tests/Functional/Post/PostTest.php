@@ -68,4 +68,38 @@ class PostTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertRouteSame('post_index');
     }
+
+    public function testShareOnFacebookWorks(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGeneratorInterface */
+        $urlGeneratorInterface = $client->getContainer()->get('router');
+        /** @var EntityManager $em */
+        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+        /** @var PostRepository $postRepository */
+        $postRepository = $em->getRepository(Post::class);
+
+        /** @var Post */
+        $post = $postRepository->findOneBy([]);
+
+        $postLink = $urlGeneratorInterface->generate('post_details', ['slug' => $post->getSlug()]);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $postLink
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $link = $crawler->filter('.share.facebook')->link()->getUri();
+
+        $this->assertStringContainsString(
+            "https://www.facebook.com/sharer/sharer.php",
+            $link
+        );
+
+        $this->assertStringContainsString($postLink, $link);
+    }
 }
