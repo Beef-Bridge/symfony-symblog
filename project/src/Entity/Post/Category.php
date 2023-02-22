@@ -29,7 +29,7 @@ class Category
     #[Assert\NotBlank()]
     private string $slug = '';
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank()]
     private ?string $description = null;
 
