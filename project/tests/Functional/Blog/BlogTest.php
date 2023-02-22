@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostTest extends WebTestCase
+class BlogTest extends WebTestCase
 {
     public function testBlogPageWorks(): void
     {
