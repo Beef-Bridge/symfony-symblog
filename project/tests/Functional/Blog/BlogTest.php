@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Functional\Post;
+namespace App\Tests\Functional\Blog;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
