@@ -36,9 +36,11 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
 
         $posts = $this->postRepository->findAll();
         foreach ($posts as $post) {
-            $post->addCategory(
-                $categories[mt_rand(0, count($categories) - 1)]
-            );
+            for ($i=0; $i < mt_rand(1, 5); $i++) {
+                $post->addCategory(
+                    $categories[mt_rand(0, count($categories) - 1)]
+                );
+            }
         }
 
         $manager->flush();
