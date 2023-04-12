@@ -1,5 +1,7 @@
 <?php
 
+namespace App\DataFixtures;
+
 use App\Entity\Post\Category;
 use Faker\Factory;
 use Faker\Generator;
@@ -19,10 +21,11 @@ class CategoryFixtures extends Fixture
     {
         for ($i = 0; $i < 10; $i++) {
             $category = new Category();
-            $category->setName($this->faker->words(1, true) . ' ' . $i)
-                    ->setDescription(
-                        mt_rand(0, 1) === 1 ? $this->faker->realText(254) : null
-                    );
+            $category->setName($this->faker->words(1, true) . ' ' . $i);
+            $category->setDescription(
+                $this->faker->realText(254)
+            );
+
             $manager->persist($category);
         }
 
