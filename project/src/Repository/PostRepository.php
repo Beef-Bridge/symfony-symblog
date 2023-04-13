@@ -40,7 +40,6 @@ class PostRepository extends ServiceEntityRepository
     public function findPublished(Int $page, ?Category $category = null): PaginationInterface
     {
         $postList = $this->createQueryBuilder('p')
-            ->select('c', 'p')
             ->join('p.categories', 'c')
             ->where('p.state LIKE :state')
             ->setParameter('state', Post::STATE_LIST[1])
@@ -48,8 +47,8 @@ class PostRepository extends ServiceEntityRepository
 
         if (isset($category)) {
             $postList = $postList
-                ->andWhere('c.id LIKE :category')
-                ->setParameter('category', $category->getId());
+                ->andWhere(':category IN (c)')
+                ->setParameter('category', $category);
         }
 
         $postList->getQuery()
