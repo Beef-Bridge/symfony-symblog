@@ -19,6 +19,10 @@
 
       <h1 class="font-bold text-3xl mb-6">{{ post.title|capitalize }}</h1>
 
+      <div class="mx-auto mt-6">
+        {% include 'components/badges.html.twig' with { badges: post.categories } only %}
+      </div>
+
       <p>{{ post.content|raw }}</p>
 
       {% include 'components/share.html.twig' %}
