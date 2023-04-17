@@ -151,6 +151,9 @@ class PostTest extends WebTestCase
         $postRepository = $em->getRepository(Post::class);
 
         /** @var Post */
+        $post = $postRepository->findOneBy([]);
+
+        /** @var Post */
         $postLink = $urlGeneratorInterface->generate('post_details', ['slug' => $post->getSlug()]);
 
         $crawler = $client->request(
