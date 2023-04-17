@@ -1,0 +1,19 @@
+{% if options %}
+  <div class="flex flex-row flex-wrap mt-8">
+    <div class="dropdown inline-block relative">
+      <button class="dropdown-toggle px-6 py-2.5 bg-blue-600 text-white font-medium leading-tight rounded inline-flex items-center">
+        <span class="mr-1">Catégories</span>
+        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+        </svg>
+      </button>
+      <ul class="dropdown-menu absolute hidden bg-white text-base z-50 float-left py-2 list-none text-left shadow-lg m-0 bg-clip-padding border-none">
+        {% for option in options %}
+          <li class="flex">
+            <a class="dropdown-item py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 grow" href="{{ path('category_index', { slug: option.slug }) }}">{{ option.name|capitalize }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endif %}
