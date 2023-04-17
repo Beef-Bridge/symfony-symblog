@@ -136,4 +136,34 @@ class PostTest extends WebTestCase
 
         $this->assertStringContainsString($postLink, $link);
     }
+
+    public function testCategoriesAreDisplay(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGeneratorInterface */
+        $urlGeneratorInterface = $client->getContainer()->get('router');
+
+        /** @var EntityManager $em */
+        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var PostRepository $postRepository */
+        $postRepository = $em->getRepository(Post::class);
+
+        /** @var Post */
+        $postLink = $urlGeneratorInterface->generate('post_details', ['slug' => $post->getSlug()]);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $postLink
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        if (!$post->getCategories()->isEmpty()) {
+            $badges = $crawler->filter('.badges')->children();
+            $this->assertGreaterThanOrEqual(1, count($badges));
+        }
+    }
 }
