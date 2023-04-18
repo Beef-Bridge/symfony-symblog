@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use App\Entity\Post\Category;
 use DateTimeImmutable;
+use App\Entity\Post\Tag;
 use App\Entity\Thumbnail;
 use Cocur\Slugify\Slugify;
+use App\Entity\Post\Category;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PostRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -60,11 +61,15 @@ class Post
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'posts')]
     private Collection $categories;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'posts')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->updatedAt = new DateTimeImmutable();
         $this->createdAt = new DateTimeImmutable();
         $this->categories = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +179,30 @@ class Post
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+            $tag->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if (!$this->categories->contains($tag)) {
+            $tag->removePost($this);
+        }
 
         return $this;
     }
