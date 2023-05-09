@@ -52,7 +52,7 @@ class PostRepository extends ServiceEntityRepository
 
         if (isset($category)) {
             $postList = $postList
-                ->join('p.categories', 'c')
+                 ->join('p.categories', 'c')
                 ->andWhere(':category IN (c)')
                 ->setParameter('category', $category);
         }
