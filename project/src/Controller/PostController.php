@@ -18,19 +18,24 @@ class PostController extends AbstractController
         Request $request,
         PostRepository $postRepository
     ): Response {
-        $postList = $postRepository->findPublished($request->query->getInt('page', 1));
-
         $searchData = new SearchData();
         $form = $this->createForm(SearchType::class, $searchData); 
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-             dd($searchData);
+            $searchData->page = $request->query->getInt('page', 1);
+            $posts = $postRepository->findBySearch($searchData);
+
+            return $this->render('post/index.html.twig', [
+                'form' => $form->createView(),
+                'posts' => $posts
+            ]);
         }
 
         return $this->render('post/index.html.twig', [
             'controller_name' => 'PostController',
             'form' => $form->createView(),
-            'posts' => $postList
+            'posts' => $postRepository->findPublished($request->query->getInt('page', 1))
         ]);
     }
 
