@@ -103,3 +103,13 @@ db-migrate: ## Run doctrine migration(s)
 
 db-load-fixtures: ## Load fixtures
 	$(EXEC_SYMFONY_CONTAINER) doctrine:fixtures:load -n
+
+## -- Yarn --
+yarn-install: ## Install all Yarn dependencies
+	$(EXEC_YARN_CONTAINER) install
+
+yarn-update: ## pdate all Yarn dependencies
+	$(EXEC_YARN_CONTAINER) update
+
+yarn-watch: ## Update all Yarn dependencies
+	$(EXEC_YARN_CONTAINER) run watch
