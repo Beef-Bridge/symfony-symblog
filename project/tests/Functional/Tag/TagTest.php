@@ -35,4 +35,38 @@ class TagTest extends WebTestCase
         $this->assertSelectorExists('h1');
         $this->assertSelectorTextContains('h1', 'Etiquette : ' . ucfirst($tag->getName()));
     }
+
+    public function testPaginationWorks(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGeneratorInterface */
+        $urlGeneratorInterface = $client->getContainer()->get('router');
+        /** @var EntityManager $em */
+        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+        /** @var TagRepository $tagRepository */
+        $tagRepository = $em->getRepository(Tag::class);
+        /** @var Tag $tag */
+        $tag = $tagRepository->findOneBy([]);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGeneratorInterface->generate('tag_index', ['slug' => $tag->getSlug()])
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $posts = $crawler->filter('div.card');
+        $this->assertEquals(9, count($posts));
+
+        $link = $crawler->selectLink('2')->extract(['href'])[0];
+        $crawler = $client->request(Request::METHOD_GET, $link);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $posts = $crawler->filter('div.card');
+        $this->assertGreaterThanOrEqual(1, count($posts));
+    }
 }
