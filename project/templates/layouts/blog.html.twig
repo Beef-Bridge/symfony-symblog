@@ -8,6 +8,8 @@
   <div class="container mx-auto">
     <h1 class="text-5xl text-center mt-24 mb-8">{{ title }}</h1>
 
+    {% include 'components/searchData.html.twig' with { form: form } only %}
+
     {% if allCategories is defined %}
       {% include 'components/dropdown.html.twig' with { options: allCategories } only %}
     {% endif %}
