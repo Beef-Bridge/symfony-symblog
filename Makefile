@@ -47,16 +47,19 @@ init: ## Init the project
 	@$(call GREEN, "The application is available at : LOCAL_HOST:LOCAL_PORT_APACHE")
 
 ## —— Tests ——
-tests: ## Run all tests
-	$(MAKE) database-init-test
-	$(EXEC_PHP_TEST_CONTAINER) bin/phpunit --testdox tests/Unit/
-	$(EXEC_PHP_TEST_CONTAINER) bin/phpunit --testdox tests/Functional/
- 
 database-init-test: ## Init database for test
 	$(EXEC_SYMFONY_CONTAINER) d:d:d --force --if-exists --env=test
 	$(EXEC_SYMFONY_CONTAINER) d:d:c --env=test
 	$(EXEC_SYMFONY_CONTAINER) d:m:m --no-interaction --env=test
 	$(EXEC_SYMFONY_CONTAINER) d:f:l --no-interaction --env=test
+
+tests-migrate-configuration: ## Migrate configuration tests
+	$(EXEC_PHP_TEST_CONTAINER) --migrate-configuration
+
+tests: ## Run all tests
+	$(MAKE) database-init-test
+	$(EXEC_PHP_TEST_CONTAINER) --testdox tests/Unit/
+	$(EXEC_PHP_TEST_CONTAINER) --testdox tests/Functional/
 
 ## —— Symfony ——
 cache-clear: ## Clear cache
