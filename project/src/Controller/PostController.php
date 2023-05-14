@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\SearchType;
+use App\Model\SearchData;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +20,16 @@ class PostController extends AbstractController
     ): Response {
         $postList = $postRepository->findPublished($request->query->getInt('page', 1));
 
+        $searchData = new SearchData();
+        $form = $this->createForm(SearchType::class, $searchData); 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+             dd($searchData);
+        }
+
         return $this->render('post/index.html.twig', [
             'controller_name' => 'PostController',
+            'form' => $form->createView(),
             'posts' => $postList
         ]);
     }
