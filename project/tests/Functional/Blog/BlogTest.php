@@ -114,4 +114,33 @@ class BlogTest extends WebTestCase
             $this->assertEquals($nbPosts, $count);
         }
     }
+
+    public function testSearchBarReturnsNoItems(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGeneratorInterface */
+        $urlGeneratorInterface = $client->getContainer()->get('router');
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGeneratorInterface->generate('post_index')
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $form = $crawler->filter('form[name=search]')->form([
+            'search[q]' => 'azzeerrttyy'
+        ]);
+
+        $crawler = $client->submit($form);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertRouteSame('post_index');
+
+        $this->assertSelectorExists('form[name=search]');
+        $this->assertSelectorNotExists('div.card');
+    }
 }
