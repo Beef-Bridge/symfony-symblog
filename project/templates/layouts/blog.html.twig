@@ -8,11 +8,9 @@
   <div class="container mx-auto">
     <h1 class="text-5xl text-center mt-24 mb-8">{{ title }}</h1>
 
-    {% include 'components/searchData.html.twig' with { form: form } only %}
+    {% include 'components/searchData.html.twig' with { form: form ?? null } only %}
 
-    {% if allCategories is defined %}
-      {% include 'components/dropdown.html.twig' with { options: allCategories } only %}
-    {% endif %}
+    {% include 'components/dropdown.html.twig' with { options: allCategories ?? null } only %}
 
     <div class="flex flex-row flex-wrap justify-evenly mt-8">
       {% for post in posts %}
