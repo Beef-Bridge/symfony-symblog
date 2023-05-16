@@ -61,7 +61,7 @@ class BlogTest extends WebTestCase
     //     $this->assertRouteSame('category_index');
     // }
 
-    public function testFilterWorks(): void
+    public function testFilterSystemWorks(): void
     {
         $client = static::createClient();
 
@@ -131,7 +131,7 @@ class BlogTest extends WebTestCase
         }
     }
 
-    public function testSearchBarReturnsNoItems(): void
+    public function testFilterSystemReturnsNoItems(): void
     {
         $client = static::createClient();
 
