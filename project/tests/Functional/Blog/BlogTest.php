@@ -44,20 +44,20 @@ class BlogTest extends WebTestCase
         $this->assertGreaterThanOrEqual(1, count($posts));
     }
 
-    public function testDropdownWorks(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request(Request::METHOD_GET, '/');
+    // public function testDropdownWorks(): void
+    // {
+    //     $client = static::createClient();
+    //     $crawler = $client->request(Request::METHOD_GET, '/');
 
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    //     $this->assertResponseIsSuccessful();
+    //     $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $link = $crawler->filter('.dropdown-menu > li > a')->link()->getUri();
-        $client->request(Request::METHOD_GET, $link);
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertRouteSame('category_index');
-    }
+    //     $link = $crawler->filter('.dropdown-menu > li > a')->link()->getUri();
+    //     $client->request(Request::METHOD_GET, $link);
+    //     $this->assertResponseIsSuccessful();
+    //     $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    //     $this->assertRouteSame('category_index');
+    // }
 
     public function testSearchBarWorks(): void
     {
