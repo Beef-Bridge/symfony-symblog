@@ -21,7 +21,7 @@ class CategoryController extends AbstractController
         PostRepository $postRepository
     ): Response {
         $searchData = new SearchData();
-        $form = $this->createForm(SearchType::class, $searchData); 
+        $form = $this->createForm(SearchType::class, $searchData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
