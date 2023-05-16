@@ -19,7 +19,9 @@ class SearchType extends AbstractType
             ->add('q', TextType::class, [
                 'attr' => [
                     'placeholder' => 'Recherche via un mot clé...'
-                ]
+                ],
+                'required' => false,
+                'empty_data' => ''
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
