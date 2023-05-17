@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', 'Cet email existe déjà dans l\'application.')]
@@ -17,9 +18,12 @@ class User
     private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank()]
     private string $avatar;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank()]
+    #[Assert\Email()]
     private ?string $email;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -29,17 +33,21 @@ class User
     private ?string $firstName = null;
 
     #[ORM\Column(type: 'json')]
+    #[Assert\NotBlank()]
     private array $roles = ['ROLE_USER'];
 
     private string $plainPassword = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank()]
     private string $password;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\NotNull()]
     private \DateTimeImmutable $updatedAt;
 
     public function getId(): ?string
