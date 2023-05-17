@@ -14,7 +14,7 @@ class User
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $avatar;
@@ -23,10 +23,10 @@ class User
     private ?string $email;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $lastname = null;
+    private ?string $lastName = null;
     
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $firstname = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(type: 'json')]
     private array $roles = ['ROLE_USER'];
@@ -34,16 +34,121 @@ class User
     private string $plainPassword = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $passord;
+    private string $password;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $updateddAt;
+    private \DateTimeImmutable $updatedAt;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
+
+    public function getAvatar(): string
+    {
+        return $this->avatar;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles = ['ROLE_USER'];
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 }
