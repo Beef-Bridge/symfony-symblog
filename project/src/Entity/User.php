@@ -50,6 +50,20 @@ class User
     #[Assert\NotNull()]
     private \DateTimeImmutable $updatedAt;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->avatar = 'https://avatars.dicebear.com/api/big-ears-neutral/' . $this->email . '.svg';
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+
     public function getId(): ?string
     {
         return $this->id;
