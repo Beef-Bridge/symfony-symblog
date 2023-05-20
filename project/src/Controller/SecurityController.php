@@ -21,4 +21,11 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername
         ]);
     }
+
+    #[Route('/deconnexion', name: 'security_logout', methods: [Request::METHOD_GET])]
+    public function logout(): void
+    {
+        // Nothing to do here...
+    }
+
 }
