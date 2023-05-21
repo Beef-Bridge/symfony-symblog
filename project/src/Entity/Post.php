@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -64,12 +65,17 @@ class Post
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'posts')]
     private Collection $tags;
 
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[JoinTable('user_post_like')]
+    private Collection $likes;
+
     public function __construct()
     {
         $this->updatedAt = new DateTimeImmutable();
         $this->createdAt = new DateTimeImmutable();
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->likes  = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,6 +213,27 @@ class Post
         return $this;
     }
 
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(User $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+        }
+
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        $this->likes->removeElement($like);
+
+        return $this;
+    }
+
     #[ORM\PrePersist]
     public function prePersist()
     {
@@ -222,5 +249,15 @@ class Post
     public function __toString()
     {
         return $this->title;
+    }
+
+    public function isLikedByUser(User $user): bool
+    {
+        return $this->likes->contains($user);
+    }
+
+    public function howManyLikes(): int
+    {
+        return count($this->likes);
     }
 }
