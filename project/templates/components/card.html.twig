@@ -2,6 +2,9 @@
   {% if post.thumbnail %}
     <a href="{{ path('post_details', { slug: post.slug }) }}"><img src="{{ vich_uploader_asset(post.thumbnail, 'imageFile') }}" alt="{{ post.thumbnail.imageName }}" class="rounded-t-lg" /></a>
   {% endif %}
+
+  {% include 'components/like.html.twig' %}
+
   <div class="p-6">
     <h5 class="font-bold text-lg mb-3">{{ post.title }}</h5>
 
