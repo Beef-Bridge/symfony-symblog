@@ -95,4 +95,36 @@ class LoginTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
+
+    public function testLoginWithRememberMe(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface */
+        $urlGenerator = $client->getContainer()->get('router');
+
+        $this->assertBrowserNotHasCookie('REMEMBERME');
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate('security_login')
+        );
+
+        $form = $crawler->filter('form[name=login]')->form([
+            '_username' => 'emilien@symblog.fr',
+            '_password' => 'password',
+            '_remember_me' => 'on'
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $client->followRedirect();
+
+        $this->assertRouteSame('post_index');
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $this->assertBrowserHasCookie('REMEMBERME');
+    }
 }
