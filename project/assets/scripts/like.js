@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class Like {
     constructor(likeElements) {
         this.likeElements = likeElements;
@@ -14,7 +16,21 @@ export default class Like {
     }
 
     onClick(event) {
-        console.log(event);
         event.preventDefault();
+        const url = this.href;
+
+        axios.get(url).then(res => {
+            const nb = res.data.nbLike;
+            const span = this.querySelector('span');
+
+            this.dataset.nb = nb;
+            span.innerHTML = nb + ' J\'aime';
+
+            const thumbsUpFilled = this.querySelector('svg.filled');
+            const thumbsUpUnfilled = this.querySelector('svg.unfilled');
+
+            thumbsUpFilled.classList.toggle('hidden');
+            thumbsUpUnfilled.classList.toggle('hidden');
+        })
     }
 }
