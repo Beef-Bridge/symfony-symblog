@@ -7,6 +7,13 @@
 {% block body %}
   <div class="container my-24 px-6 mx-auto">
     <section class="mb-32 text-gray-800">
+      <div class="mt-6">
+        {% for message in app.flashes('success') %}
+          {% include "components/alert.html.twig" with { 'message': message } %}
+        {% endfor %}
+      </div>
+
+
       {% if post.thumbnail %}
         <img class="w-full shadow-lg rounded-lg mb-6" src="{{ vich_uploader_asset(post.thumbnail, 'imageFile') }}" alt="{{ post.thumbnail.imageName }}" />
       {% endif %}
@@ -52,20 +59,22 @@
         <h2 class="text-2xl mb-8">Commentaire(s)</h2>
 
         <div class="comments">
-          <div class="comments__new">
-            <div class="w-full-width">
-              {{ form_start(form) }}
-              {{ form_label(form.content, 'Nouveau commentaire', {'attr' : {'class' : 'form-label inline-block mb-2 text-gray-700'}}) }}
-              {{ form_widget(form.content, {'attr': {'class': 'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'}}) }}
-              <button class="btn inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center mt-5" type="submit" id="button-addon2">
-                Poster mon commentaire
-              </button>
+          {% if app.user %}
+            <div class="comments__new">
+              <div class="w-full-width">
+                {{ form_start(form) }}
+                {{ form_label(form.content, 'Nouveau commentaire', {'attr' : {'class' : 'form-label inline-block mb-2 text-gray-700'}}) }}
+                {{ form_widget(form.content, {'attr': {'class': 'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'}}) }}
+                <button class="btn inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center mt-5" type="submit" id="button-addon2">
+                  Poster mon commentaire
+                </button>
 
-              {{ form_end(form) }}
+                {{ form_end(form) }}
+              </div>
             </div>
-          </div>
 
-          <hr class="my-3">
+            <hr class="my-3">
+          {% endif %}
 
           {% for comment in post.comments %}
             {% include 'components/comments.html.twig' %}
