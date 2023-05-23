@@ -2,7 +2,7 @@
 
 namespace App\Repository\Comment;
 
-use App\Entity\Comment\Comment;
+use App\Entity\Post\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,9 +20,7 @@ class CommentRepository extends ServiceEntityRepository
      * ManagerRegistry $registry
      * PaginatorInterface $paginatorInterface
      */
-    public function __construct(
-        ManagerRegistry $registry,
-    ) {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Comment::class);
     }
 }
