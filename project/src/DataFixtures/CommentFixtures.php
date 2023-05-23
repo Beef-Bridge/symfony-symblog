@@ -28,7 +28,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $posts = $this->postRepository->findAll();
 
         foreach ($posts as $post) {
-            for ($i = 0; $i < mt_rand(0, 15); $i++) {
+            for ($i = 0; $i < mt_rand(0, 10); $i++) {
                 $comment = new Comment();
                 $comment->setContent($faker->realText)
                     ->setIsApproved(!(mt_rand(0, 3) === 0))
