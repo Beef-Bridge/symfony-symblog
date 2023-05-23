@@ -62,7 +62,7 @@ class PostController extends AbstractController
 
             $this->addFlash('success', 'Votre commentaire a bien été enregistré. Il sera soumis à modération dans les plus brefs délais.');
 
-            return $this->redirectToRoute('post.show', ['slug' => $post->getSlug()]);
+            return $this->redirectToRoute('post_details', ['slug' => $post->getSlug()]);
         }
 
         return $this->render('post/details.html.twig', [
