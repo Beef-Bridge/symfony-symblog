@@ -11,16 +11,26 @@ use App\Repository\Comment\CommentRepository;
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'text')]
     private string $content;
 
+    #[ORM\Column(type: 'boolean')]
     private bool $isApproved = false;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private User $author;
 
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
     private Post $post;
 
+    #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
     public function __construct()
