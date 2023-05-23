@@ -48,6 +48,32 @@
 
       {% include 'components/share.html.twig' %}
 
+      <div class="mt-5">
+        <h2 class="text-2xl mb-8">Commentaire(s)</h2>
+
+        <div class="comments">
+          {% for comment in post.comments %}
+            <article class="mb-6 text-base">
+              <footer class="flex justify-between items-center mb-2">
+                <div class="flex items-center">
+                  <p class="inline-flex items-center mr-3 text-sm">
+                    {% if comment.author.avatar %}
+                      <img class="mr-2 w-16 h-16" src="{{ comment.author.avatar }}" alt="Avatar {{ comment.author }}" />{{ comment.author }}
+                    {% else %}
+                      <img class="mr-2 w-16 h-16" src="https://api.dicebear.com/6.x/avataaars-neutral/svg?seed=Bubba" alt="Avatar {{ comment.author }}" />{{ comment.author }}
+                    {% endif %}
+                  </p>
+                  <p class="text-sm">
+                    <time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time>
+                  </p>
+                </div>
+              </footer>
+              <p>{{ comment.content|raw }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+
       <div class="mx-auto mt-6">
         <a href="{{ path('post_index') }}" class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Retour</a>
       </div>
