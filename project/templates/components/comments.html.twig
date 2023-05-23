@@ -1,0 +1,19 @@
+{% if comment.isApproved %}
+  <article class="mb-6 text-base">
+    <footer class="flex justify-between items-center mb-2">
+      <div class="flex items-center">
+        <p class="inline-flex items-center mr-3 text-sm">
+          {% if comment.author.avatar %}
+            <img class="mr-2 w-16 h-16" src="{{ comment.author.avatar }}" alt="Avatar {{ comment.author }}" />{{ comment.author }}
+          {% else %}
+            <img class="mr-2 w-16 h-16" src="https://api.dicebear.com/6.x/avataaars-neutral/svg?seed=Bubba" alt="Avatar {{ comment.author }}" />{{ comment.author }}
+          {% endif %}
+        </p>
+        <p class="text-sm">
+          <time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time>
+        </p>
+      </div>
+    </footer>
+    <p>{{ comment.content|raw }}</p>
+  </article>
+{% endif %}
