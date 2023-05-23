@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Comment;
+namespace App\Entity\Post;
 
 use App\Entity\Post;
 use App\Entity\User;
