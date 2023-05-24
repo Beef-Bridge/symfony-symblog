@@ -6,7 +6,7 @@ use App\Entity\Post;
 use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\Comment\CommentRepository;
+use App\Repository\Post\CommentRepository;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
