@@ -14,7 +14,14 @@ class CommentController extends AbstractController
     #[Route('/comment/{id}', name: 'comment_delete')]
     public function delete(Comment $comment, EntityManagerInterface $em, Request $request): Response
     {
-        $params = [];
+        $params = ['slug' => $comment->getPost()->getSlug()];
+
+        if($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
+            $em->remove($comment);
+            $em->flush();
+        }
+
+        $this->addFlash('success', 'Votre commentaire a bien été supprimé.');
 
         return $this->redirectToRoute('post_details', $params);
     }
