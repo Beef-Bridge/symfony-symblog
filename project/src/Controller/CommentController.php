@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post\Comment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CommentController extends AbstractController
 {
     #[Route('/comment/{id}', name: 'comment_delete')]
+    #[Security("is_granted('ROLE_USER') and user === comment.getAuthor()")]
     public function delete(Comment $comment, EntityManagerInterface $em, Request $request): Response
     {
         $params = ['slug' => $comment->getPost()->getSlug()];
