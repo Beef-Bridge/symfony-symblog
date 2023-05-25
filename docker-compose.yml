@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    container_name: db_symblog_youtube
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      - dev
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_symblog_youtube
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: db
+    networks:
+      - dev
+    
+  www:
+    build: docker
+    container_name: www_symblog_youtube
+    restart: always
+    ports:
+      - 8001:80
+    volumes:
+      - ./docker/vhosts:/etc/apache2/sites-enabled
+      - ./docker/configs/php.ini:/usr/local/etc/php/php.ini
+      - ./project:/var/www
+    networks:
+      - dev
+
+networks:
+  dev:
+
+volumes:
+  db-data:

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Symblog - {{ post.title }}
+{% endblock %}
+
+{% block body %}
+  <div class="container my-24 px-6 mx-auto">
+    <section class="mb-32 text-gray-800">
+      <div class="mt-6">
+        {% for message in app.flashes('success') %}
+          {% include "components/alert.html.twig" with { 'message': message } %}
+        {% endfor %}
+      </div>
+
+
+      {% if post.thumbnail %}
+        <img class="w-full shadow-lg rounded-lg mb-6" src="{{ vich_uploader_asset(post.thumbnail, 'imageFile') }}" alt="{{ post.thumbnail.imageName }}" />
+      {% endif %}
+
+      <div class="flex items-center mb-6">
+        <div>
+          <span>Publié le <u>{{ post.createdAt|date('d/m/Y') }}</u></span>
+        </div>
+      </div>
+
+      <div class="flex items-center mb-6">
+        <ul class="flex flex-row justify-start text-xs mt-8">
+          <li>
+            <span class="flex flex-row">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+              </svg>&nbsp;<b>Tag(s) :</b>&nbsp;
+            </span>
+          </li>
+          {% for tag in post.tags %}
+            <li>
+              <a href="{{ path('tag_index', { slug: tag.slug }) }}">{{ tag.name }}</a>
+              {% if not loop.last %}
+                <span>,&nbsp;</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <h1 class="font-bold text-3xl mb-6">{{ post.title|capitalize }}</h1>
+
+      <div class="mx-auto mt-6">
+        {% include 'components/badges.html.twig' with { badges: post.categories } only %}
+      </div>
+
+      <p>{{ post.content|raw }}</p>
+
+      {% include 'components/share.html.twig' %}
+
+      <div class="mt-5">
+        <h2 class="text-2xl mb-8">Commentaire(s)</h2>
+
+        <div class="comments">
+          {% if app.user %}
+            <div class="comments__new">
+              <div class="w-full-width">
+                {{ form_start(form) }}
+                {{ form_label(form.content, 'Nouveau commentaire', {'attr' : {'class' : 'form-label inline-block mb-2 text-gray-700'}}) }}
+                {{ form_widget(form.content, {'attr': {'class': 'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'}}) }}
+                <button class="btn inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center mt-5" type="submit" id="button-addon2">
+                  Poster mon commentaire
+                </button>
+
+                {{ form_end(form) }}
+              </div>
+            </div>
+
+            <hr class="my-3">
+          {% endif %}
+
+          {% for comment in post.comments %}
+            {% include 'components/comments.html.twig' %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mx-auto mt-6">
+        <a href="{{ path('post_index') }}" class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Retour</a>
+      </div>
+    </section>
+  </div>
+{% endblock %}
