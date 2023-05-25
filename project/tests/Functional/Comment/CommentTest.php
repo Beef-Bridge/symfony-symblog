@@ -60,4 +60,34 @@ class CommentTest extends WebTestCase
             'Votre commentaire a bien été enregistré. Il sera soumis à modération dans les plus brefs délais.'
         );
     }
+
+    public function testPostCommentIfUserNotLoggedIn(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get('router');
+
+        /** @var EntityManagerInterface $em */
+        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var PostRepository $postRepository */
+        $postRepository = $em->getRepository(Post::class);
+
+        /** @var Post $post */
+        $post = $postRepository->findOneBy([]);
+
+        $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate(
+                'post_details',
+                ['slug' => $post->getSlug()]
+            )
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $this->assertSelectornotExists('div.comments__new');
+    }
+
 }
